@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CobradorPro+</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="screen active">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Main Layout -->
+        <div id="main-layout" class="screen">
+            <div class="background-particles"></div>
+            
+            <header class="top-bar">
+                <h1 class="logo-small">CobradorPro+</h1>
+                <div id="user-badge"></div>
+            </header>
+
+            <main id="content-area">
+                <!-- Dashboard -->
+                <div id="dashboard-view" class="view">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <i data-feather="dollar-sign" class="icon-gold"></i>
+                            <span>A Receber</span>
+                            <h3 id="stat-receivable">R$ 0,00</h3>
+                        </div>
+                        <div class="stat-card">
+                            <i data-feather="trending-up" class="icon-green"></i>
+                            <span>Juros</span>
+                            <h3 id="stat-interest">R$ 0,00</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="section-header">
+                        <h3>Recentes</h3>
+                        <a href="#" onclick="router.navigate('/debtors')">Ver todos</a>
+                    </div>
+                    <div id="recent-debtors-list" class="list-container"></div>
+                </div>
+
+                <!-- Debtors List -->
+                <div id="debtors-view" class="view">
+                    <div class="search-bar">
+                        <i data-feather="search"></i>
+                        <input type="text" id="search-input" placeholder="Buscar devedor...">
+                    </div>
+                    <div id="debtors-list" class="list-container"></div>
+                </div>
+
+                <!-- Add Debtor -->
+                <div id="add-view" class="view">
+                    <h2 class="page-title">Novo Empréstimo</h2>
+                    <form id="add-debtor-form">
+                        <div class="card">
+                            <div class="input-group">
+                                <label>Nome do Devedor</label>
+                                <input type="text" id="add-name" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Valor (R$)</label>
+                                <input type="number" id="add-amount" step="0.01" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Data</label>
+                                <input type="date" id="add-date" required>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="input-group">
+                                <label>Juros (%)</label>
+                                <input type="number" id="add-rate" value="10" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Parcelas</label>
+                                <input type="number" id="add-installments" value="1" min="1" max="24" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Salvar Empréstimo</button>
+                    </form>
+                </div>
+
+                <!-- Debtor Detail -->
+                <div id="detail-view" class="view">
+                    <div class="nav-header">
+                        <button onclick="router.navigate('/debtors')" class="btn-icon"><i data-feather="arrow-left"></i></button>
+                        <button id="btn-delete-debtor" class="btn-icon text-red"><i data-feather="trash-2"></i></button>
+                    </div>
+                    
+                    <div id="detail-hero" class="card hero-card">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <button id="btn-add-payment" class="btn-primary mb-4">
+                        <i data-feather="check-circle"></i> Registrar Pagamento
+                    </button>
+
+                    <h3>Histórico</h3>
+                    <div id="payment-history" class="list-container"></div>
+                </div>
+
+                <!-- Profile -->
+                <div id="profile-view" class="view">
+                    <h2 class="page-title">Perfil</h2>
+                    <div class="card profile-card">
+                        <div class="avatar-large">
+                            <i data-feather="user"></i>
+                        </div>
+                        <h3 id="profile-name">Nome</h3>
+                        <p id="profile-email">email@email.com</p>
+                        <div id="profile-premium-badge"></div>
+                    </div>
+
+                    <div class="menu-list">
+                        <button class="menu-item" onclick="alert('Funcionalidade Premium')">
+                            <i data-feather="file-text" class="text-blue"></i>
+                            <span>Exportar Relatório</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <nav class="bottom-nav">
+                <a href="#" onclick="router.navigate('/')" class="nav-item" id="nav-home">
+                    <i data-feather="home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#" onclick="router.navigate('/debtors')" class="nav-item" id="nav-debtors">
+                    <i data-feather="users"></i>
+                    <span>Devedores</span>
+                </a>
+                <a href="#" onclick="router.navigate('/add')" class="nav-item" id="nav-add">
+                    <i data-feather="plus-circle"></i>
+                    <span>Add</span>
+                </a>
+                <a href="#" onclick="router.navigate('/profile')" class="nav-item" id="nav-profile">
+                    <i data-feather="settings"></i>
+                    <span>Perfil</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Lockout Screen -->
+        <div id="lockout-screen" class="screen lockout-overlay">
+            <div class="lockout-content">
+                <div class="lock-icon">
+                    <i data-feather="lock"></i>
+                </div>
+                <h2>Acesso Bloqueado</h2>
+                <div class="alert-box">
+                    <p>Período de teste expirado.</p>
+                    <div class="price-tag">
+                        <i data-feather="alert-triangle"></i> R$ 20,00
+                    </div>
+                </div>
+                <p class="label">Chave Pix para transferência:</p>
+                <div class="pix-box" onclick="utils.copyPix()">
+                    <span class="pix-key">05480342223</span>
+                    <i data-feather="copy"></i>
+                </div>
+                <p class="timer-label">Liberado automaticamente em:</p>
+                <h3 id="lockout-timer">00h 00m</h3>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div id="payment-modal" class="modal">
+            <div class="modal-content">
+                <h3>Novo Pagamento</h3>
+                <input type="number" id="payment-amount-input" placeholder="Valor (R$)">
+                <div class="modal-actions">
+                    <button onclick="ui.closeModal()" class="btn-secondary">Cancelar</button>
+                    <button onclick="ui.confirmPayment()" class="btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
